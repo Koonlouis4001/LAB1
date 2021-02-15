@@ -116,9 +116,9 @@ int main(void)
 			  }
 			  else if(LED1_HalfPeriod == 250)
 			  {
-				  LED1_HalfPeriod = 1000/3;
+				  LED1_HalfPeriod = 1000/6;
 			  }
-			  else if(LED1_HalfPeriod == 1000/3)
+			  else if(LED1_HalfPeriod == 1000/6)
 			  {
 				  LED1_HalfPeriod = 1000;
 			  }

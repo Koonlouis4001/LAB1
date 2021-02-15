@@ -89,7 +89,10 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  GPIO_PinState switchState[2];//Now,Last
+  GPIO_PinState switchState[2];//Now,Last S1
+  GPIO_PinState SecondswitchState[2];//Now,Last S2
+  GPIO_PinState ThirdswitchState[2];//Now,Last S3
+  GPIO_PinState FourthswitchState[2];//Now,Last S4
   uint16_t LED1_HalfPeriod = 1000; //2Hz
   uint32_t TimeStamp = 0;
   uint32_t ButtonTimeStamp = 0;
@@ -104,6 +107,9 @@ int main(void)
 	  {
 		  ButtonTimeStamp = HAL_GetTick();
 		  switchState[0] = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_10);
+		  SecondswitchState[0] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_3);
+		  ThirdswitchState[0] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5);
+		  FourthswitchState[0] = HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_4);
 		  if(switchState[1] == GPIO_PIN_SET && switchState[0] == GPIO_PIN_RESET)
 		  {
 			  if(LED1_HalfPeriod == 1000)
@@ -123,7 +129,22 @@ int main(void)
 				  LED1_HalfPeriod = 1000;
 			  }
 		  }
+		  if(SecondswitchState[1] == GPIO_PIN_SET && SecondswitchState[0] == GPIO_PIN_RESET)
+		  {
+			  if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_7) == GPIO_PIN_SET)
+			  {
+				  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_RESET);
+			  }
+			  else
+			  {
+				  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_SET);
+			  }
+		  }
 		  switchState[1] = switchState[0];
+		  SecondswitchState[1] = SecondswitchState[0];
+		  ThirdswitchState[1] = ThirdswitchState[0];
+		  FourthswitchState[1] = FourthswitchState[0];
+
 	  }
 	  if(HAL_GetTick() - TimeStamp >= LED1_HalfPeriod)
 	  {

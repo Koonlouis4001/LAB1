@@ -94,7 +94,9 @@ int main(void)
   GPIO_PinState ThirdswitchState[2];//Now,Last S3
   GPIO_PinState FourthswitchState[2];//Now,Last S4
   uint16_t LED1_HalfPeriod = 1000; //2Hz
+  uint16_t LED3_Light = 500; //light activate time
   uint32_t TimeStamp = 0;
+  uint32_t ThirdTimeStamp = 0; //time stamp for S3
   uint32_t ButtonTimeStamp = 0;
 
   /* USER CODE END 2 */
@@ -140,11 +142,21 @@ int main(void)
 				  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_7, GPIO_PIN_SET);
 			  }
 		  }
+		  if(ThirdswitchState[1] == GPIO_PIN_SET && ThirdswitchState[0] == GPIO_PIN_RESET)
+		  {
+			  if(LED3_Light == 500)
+			  {
+				  LED3_Light = 1500;
+			  }
+		  	  else
+		  	  {
+		  		  LED3_Light = 500;
+		  	  }
+		  }
 		  switchState[1] = switchState[0];
 		  SecondswitchState[1] = SecondswitchState[0];
 		  ThirdswitchState[1] = ThirdswitchState[0];
 		  FourthswitchState[1] = FourthswitchState[0];
-
 	  }
 	  if(HAL_GetTick() - TimeStamp >= LED1_HalfPeriod)
 	  {
@@ -156,6 +168,18 @@ int main(void)
 		  else
 		  {
 			  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_SET);
+		  }
+	  }
+	  if(HAL_GetTick() - ThirdTimeStamp <= LED3_Light && HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == GPIO_PIN_RESET)
+	  {
+		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
+	  }
+	  else
+	  {
+		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
+		  if(HAL_GetTick() - ThirdTimeStamp >= 2)
+		  {
+			  ThirdTimeStamp = HAL_GetTick();
 		  }
 	  }
     /* USER CODE END WHILE */

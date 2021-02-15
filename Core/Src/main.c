@@ -170,17 +170,17 @@ int main(void)
 			  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, GPIO_PIN_SET);
 		  }
 	  }
-	  if(HAL_GetTick() - ThirdTimeStamp <= LED3_Light && HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_5) == GPIO_PIN_RESET)
+	  if(HAL_GetTick() - ThirdTimeStamp <= LED3_Light)
 	  {
-		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
+		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
+	  }
+	  else if(HAL_GetTick() - ThirdTimeStamp > 2000)
+	  {
+		  ThirdTimeStamp = HAL_GetTick();
 	  }
 	  else
 	  {
-		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
-		  if(HAL_GetTick() - ThirdTimeStamp >= 2)
-		  {
-			  ThirdTimeStamp = HAL_GetTick();
-		  }
+		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
 	  }
     /* USER CODE END WHILE */
 
